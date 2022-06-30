@@ -1,8 +1,12 @@
-<?php   
+<?php
+
+use Envms\FluentPDO\Queries\Select;
+
 class ProductService {
-    function getAllProducts($fluent){
-        $quary = $fluent->from('products')->fetch();
-        $fluent->close();
+    function getAllProducts($pdo){
+        // $quary = $fluent->from('products')->fetch();
+        // $fluent->close();
+        $quary = $pdo->quary("SELECT * FROM products");
         return $quary;
     }
     function getProductById($fluent, $id){
