@@ -7,9 +7,10 @@
     <title>Product</title>
     <?php
         function getAllProducts(){
-            $pdo = new PDO("mysql:dbname=phptest", "root", "");
-            $quary = $pdo->query("SELECT * FROM products");
-            return $quary;
+            $pdo = new PDO('mysql:dbname=phptest', 'root', '');
+            $fluent = new \Envms\FluentPDO\Query($pdo);
+            $query = $fluent->from('article')->where('id', 1)->fetch();
+            return $query;
         }
         function getProductById($product_id){
             $pdo = new PDO("mysql:dbname=phptest", "root", "");
