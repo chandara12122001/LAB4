@@ -8,6 +8,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <?php
+        session_start();
+    ?>
 </head>
 
 <body>
@@ -26,11 +29,13 @@
         $fluent = new \Envms\FluentPDO\Query($pdo);
         $value = array('NAME'=>$name, 'pwd'=>$password, 'gender'=>$gender, 'email'=>$email, 'class'=>$class);
         $statement = $fluent->insertInto('users')->values($value)->execute();
+        $_SESSION['user'] = $name;
     } catch (PDOException $ex) {
         $error = $ex->getMessage();
         echo $error;
         exit();
     }
+    header("Location: ./src/view/index.php");
     ?>
 
 

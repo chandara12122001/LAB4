@@ -41,6 +41,8 @@
         $_SESSION['user']=$username;
         echo "You are logged in as ".$username;
     }
+
+    header("Location: ./src/view/index.php");
     ?>
 
 
