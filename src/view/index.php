@@ -21,36 +21,6 @@
             $query = $fluent->from('products')->where('id', 1);
             return $query;
         }
-        function addNewProduct($product_id, $name, $amount, $price, $user_id){
-            // $product_id = intval($product_id);
-            // $name = strval($name);
-            // $amount = intval($amount);
-            // $price = floatval($price);
-            // $user_id = intval($user_id);
-            echo $product_id;
-            $value = array(
-                'id'=>$product_id,
-                'name'=>$name,
-                'amount'=>$amount,
-                'price'=>$price,
-                'user_id'=>$user_id
-            );
-            // print_r($value);
-            $pdo = new PDO('mysql:host=localhost;dbname=phptest', 'root', '');
-            $fluent = new \Envms\FluentPDO\Query($pdo);
-            $query = $fluent->insertInto('products')->values($value)->execute();    
-            return $query;
-        }
-        function updateProduct($product_id, $name, $amount, $price, $user_id){
-            $product_id = intval($product_id);
-            $name = strval($name);
-            $amount = intval($amount);
-            $price = floatval($price);
-            $user_id = intval($user_id);
-            $pdo = new PDO("mysql:dbname=phptest", "root", "");
-            $sql = "UPDATE products SET name=?, amount=?, price=?, user_id=? WHERE id=?";
-            $pdo->prepare($sql)->execute([$name, $amount, $price, $user_id, $product_id]);
-        }
         function deleteProduct($product_id){
             $product_id = intval($product_id);
             $pdo = new PDO("mysql:dbname=phptest", "root", "");
@@ -62,6 +32,7 @@
             padding: 20px;
             border: 1px solid black;
             border-collapse: collapse;
+            
         }
 
         table{
@@ -79,6 +50,7 @@
             padding: 10px;
             border: 1px solid black;
             border-radius: 8px;
+            margin: 5px;
         }
     </style>
 </head>
@@ -91,26 +63,30 @@
                  <th>Title</th>
                  <th>Amount</th>
                  <th>Price</th>
+                 <th>Actiion</th>
              </tr>
              <?php
                  $allProduct = getAllProducts();
                  foreach($allProduct as $product){
                      echo("
-                         <tr>
+                        <tr>
                              <td>{$product['id']}</td>
                              <td>{$product['name']}</td>
                              <td>{$product['amount']}</td>
                              <td>{$product['price']}</td>
-                         </tr>
-                     ");
+                             <td>
+                                <button id='{$product['id']}'>Edit</button>
+                            </td>
+                        </tr>
+                    ");
+                        
                 }
              ?>
          </table>
        </div>
        <div style="margin: 10px;">
             <h1>Product</h1>
-            <form action="index.php" method="POST">
-                <input type="text" name="product_id" id="product_id" placeholder="product id">
+            <form action="submitForm.php" method="POST">
                 <input type="text" name="name" id="name" placeholder="product name">
                 <input type="text" name="amount" id="amount" placeholder="product amount">
                 <input type="text" name="price" id="price" placeholder="product price">
@@ -118,13 +94,11 @@
                 <button type="submit">ADD NEW</button>
             </form>
        </div>
-       <?php
-            if (isset($_POST['product_id'])){
-                addNewProduct($_POST['product_id'],$_POST['name'], $_POST['amount'], $_POST['price'], $_POST['user_id']);
-            }
-       ?>
     </div>
 
     
 </body>
+<script>
+    
+</script>
 </html>
