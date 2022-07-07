@@ -1,3 +1,6 @@
+<?php
+    require './vendor/autoload.php';
+?>
 <html lang="en">
 
 <head>
@@ -20,7 +23,9 @@
     try {
         $pdo = new PDO('mysql:host=localhost;dbname=phptest', 'root', 'database123');
         echo "You have connected!";
-        $statement = $pdo->query("INSERT INTO users (NAME, pwd, gender, email, class) VALUES ('$name', '$password', '$gender', '$email', '$class')");
+        $fluent = new \Envms\FluentPDO\Query($pdo);
+        $value = array('NAME'=>$name, 'pwd'=>$password, 'gender'=>$gender, 'email'=>$email, 'class'=>$class);
+        $statement = $fluent->insertInto('users')->values($value)->execute();
     } catch (PDOException $ex) {
         $error = $ex->getMessage();
         echo $error;
