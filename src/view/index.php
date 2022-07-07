@@ -1,3 +1,6 @@
+<?php
+    require '../../vendor/autoload.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,9 +10,10 @@
     <title>Product</title>
     <?php
         function getAllProducts(){
-            $pdo = new PDO('mysql:dbname=phptest', 'root', '');
+            $pdo = new PDO('mysql:host=localhost;dbname=phptest', 'root', '');
             $fluent = new \Envms\FluentPDO\Query($pdo);
-            $query = $fluent->from('article')->where('id', 1)->fetch();
+            $query = $fluent->from('products')->where('id', 1)->fetch();
+            print_r($query);
             return $query;
         }
         function getProductById($product_id){
