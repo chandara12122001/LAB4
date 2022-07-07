@@ -17,20 +17,29 @@
             return $query;
         }
         function addNewProduct($product_id, $name, $amount, $price, $user_id){
-            $pdo = new PDO("mysql:dbname=phptest", "root", "");
             $product_id = intval($product_id);
             $name = strval($name);
             $amount = intval($amount);
             $price = floatval($price);
-            $user_id = strval($user_id);
-            $query = $pdo->query("INSERT INTO products (id name amount price user_id) VALUES ('$product_id', '$name', '$amount', '$price', '$user_id')");
-            return array(
-                "id"=>$product_id,
-                "name"=>$name,
-                "amount"=>$amount,
-                "price"=>$price,
-                "user_id"=>$user_id
-            );
+            $user_id = intval($user_id);
+            $pdo = new PDO("mysql:dbname=phptest", "root", "");
+            $query = $pdo->query("INSERT INTO products (id, name, amount, price, user_id) VALUES ('$product_id', '$name', '$amount', '$price')");
+            return $query;
+        }
+        function updateProduct($product_id, $name, $amount, $price, $user_id){
+            $product_id = intval($product_id);
+            $name = strval($name);
+            $amount = intval($amount);
+            $price = floatval($price);
+            $user_id = intval($user_id);
+            $pdo = new PDO("mysql:dbname=phptest", "root", "");
+            $sql = "UPDATE products SET name=?, amount=?, price=?, user_id=? WHERE id=?";
+            $pdo->prepare($sql)->execute([$name, $amount, $price, $user_id, $product_id]);
+        }
+        function deleteProduct($product_id){
+            $product_id = intval($product_id);
+            $pdo = new PDO("mysql:dbname=phptest", "root", "");
+            $pdo->prepare("DELETE FROM products WHERE id=?")->execute([$product_id]);
         }
     ?>
     <style>
@@ -69,9 +78,7 @@
                  <th>Price</th>
              </tr>
              <?php
-                 
                  $allProduct = getAllProducts();
-        
                  foreach($allProduct as $product){
                      echo("
                          <tr>
@@ -87,18 +94,17 @@
        </div>
        <div style="margin: 10px;">
             <h1>Product</h1>
-            <form action="index.php" method="post   ">
-                <input type="text" name="product_id" placeholder="product id">
-                <input type="text" name="name" placeholder="product name">
-                <input type="text" name="amount" placeholder="product amount">
-                <input type="text" name="price" placeholder="product price">
-                <input type="text" name="user_id" placeholder="product user_id">
+            <form action="index.php" method="post">
+                <input type="text" name="product_id" id="product_id" placeholder="product id">
+                <input type="text" name="name" id="name" placeholder="product name">
+                <input type="text" name="amount" id="amount" placeholder="product amount">
+                <input type="text" name="price" id="price" placeholder="product price">
+                <input type="text" name="user_id" id="user_id" placeholder="user_id">
                 <button type="submit">ADD NEW</button>
-                <button type="submit">EDIT</button>
             </form>
        </div>
        <?php
-            if ($_SERVER["REQUEST_METHOD"] == "POST"){
+            if (isset($_POST['product_id'])){
                 $newProduct = addNewProduct($_POST['product_id'], $_POST['name'], $_POST['amount'], $_POST['price'], $_POST['user_id']);
                 print_r($newProduct);
             }
