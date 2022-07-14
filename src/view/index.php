@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <?php
         function getAllProducts(){
             $pdo = new PDO('mysql:host=localhost;dbname=phptest', 'root', '');
@@ -20,11 +21,6 @@
             $fluent = new \Envms\FluentPDO\Query($pdo);
             $query = $fluent->from('products')->where('id', 1);
             return $query;
-        }
-        function deleteProduct($product_id){
-            $product_id = intval($product_id);
-            $pdo = new PDO("mysql:dbname=phptest", "root", "");
-            $pdo->prepare("DELETE FROM products WHERE id=?")->execute([$product_id]);
         }
     ?>
     <style>
@@ -75,7 +71,18 @@
                              <td>{$product['amount']}</td>
                              <td>{$product['price']}</td>
                              <td>
-                                <button id='{$product['id']}'>Edit</button>
+                                <form action='productOperation.php.php' method='POST'>
+                                    <input type='text' name='deleteId'  placeholder='product name' value='{$product['id']}' style='display:none;'>
+                                    <button type='submit'>Delete</button>
+                                </form>
+                                <form action='updateForm.php' method='POST'>
+                                    <input type='text' name='updateId'  placeholder='product_id' value='{$product['id']}' style='display:none;'>
+                                    <input type='text' name='updateName'  placeholder='product name' value='{$product['name']}' style='display:none;'>
+                                    <input type='text' name='updateAmount'  placeholder='product amount' value='{$product['amount']}' style='display:none;'>
+                                    <input type='text' name='updatePrice'  placeholder='product price' value='{$product['price']}' style='display:none;'>
+                                    <input type='text' name='updateUser_id'  placeholder='user id' value='{$product['user_id']}' style='display:none;'>
+                                    <button type='submit'>Update</button>
+                                </form>
                             </td>
                         </tr>
                     ");
@@ -99,6 +106,15 @@
     
 </body>
 <script>
-    
+    $(".btnDelete").click(function() {
+    // alert(this.id); // or alert($(this).attr('id'));
+    $.ajax({
+    type: "POST",
+    url: "submitForm.php",
+    data: { 'action': this.id }
+  }).done(function( msg ) {
+    alert( "Data Saved: " + msg );
+  });
+});
 </script>
 </html>
