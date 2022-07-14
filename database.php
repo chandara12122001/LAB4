@@ -11,7 +11,7 @@
     <?php
     echo "<h1>helloworld </h1>";
     try {
-        $pdo = new PDO('mysql:host=localhost;dbname=phptest', 'root', 'database123');
+        $pdo = new PDO('mysql:host=localhost;dbname=phptest', 'root', '');
         echo "You have connected!";
         $statement = $pdo->query("select * from users");
         echo '<table border="1">'. "\n";

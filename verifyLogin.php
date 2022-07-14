@@ -21,7 +21,7 @@
     try {
         $username="";
         $pwd="";
-        $pdo = new PDO('mysql:host=localhost;dbname=phptest', 'root', 'database123');
+        $pdo = new PDO('mysql:host=localhost;dbname=phptest', 'root', '');
         echo "You have connected!";
         // $fluent = new \Envms\FluentPDO\Query($pdo);
         // $statement = $fluent->from('users')->where('name', $name)->fetch();

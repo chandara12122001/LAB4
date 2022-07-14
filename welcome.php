@@ -24,7 +24,7 @@
         $password = $_POST['password'];
     }
     try {
-        $pdo = new PDO('mysql:host=localhost;dbname=phptest', 'root', 'database123');
+        $pdo = new PDO('mysql:host=localhost;dbname=phptest', 'root', '');
         echo "You have connected!";
         $fluent = new \Envms\FluentPDO\Query($pdo);
         $value = array('NAME'=>$name, 'pwd'=>$password, 'gender'=>$gender, 'email'=>$email, 'class'=>$class);
